@@ -1,0 +1,292 @@
+<div class="min-h-full w-full bg-background relative overflow-x-hidden pt-20 pb-32">
+  
+  <!-- Header -->
+  <div class="max-w-4xl mx-auto text-center px-8 mb-16">
+    <div class="text-yellow-500 text-[10px] font-mono tracking-widest uppercase mb-6">// pricing.config</div>
+    <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight mb-6">
+      Built for solo devs. <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">Wired</span><br/>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-secondary">for teams.</span>
+    </h1>
+    <p class="text-lg text-slate-400 font-mono leading-relaxed max-w-2xl mx-auto mb-10">
+      Start free. Unlock AI, GPU compute and voice collab<br/>
+      when you need them.
+    </p>
+
+    <!-- Toggle -->
+    <div class="inline-flex items-center space-x-4 bg-surface border border-slate-800 rounded-full p-1.5 px-4">
+      <span [class.text-primary]="!isYearly" [class.text-slate-500]="isYearly" class="text-xs font-bold font-mono transition-colors">Monthly</span>
+      <button (click)="toggleBilling()" class="w-10 h-5 rounded-full bg-slate-800 relative transition-colors focus:outline-none" [class.bg-primary]="isYearly">
+        <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform duration-200" [class.translate-x-5]="isYearly"></span>
+      </button>
+      <span [class.text-primary]="isYearly" [class.text-slate-500]="!isYearly" class="text-xs font-bold font-mono transition-colors flex items-center">
+        Yearly <span class="ml-2 bg-emerald-500/20 text-emerald-400 text-[9px] px-1.5 py-0.5 rounded">-20%</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Pricing Cards -->
+  <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-3 gap-8 mb-32 items-end">
+    
+    <!-- Basic -->
+    <div class="bg-surface border border-slate-800 rounded-2xl p-8 h-[500px] flex flex-col relative">
+      <div class="absolute top-8 right-8 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-1 rounded">Current</div>
+      <h3 class="text-2xl font-bold text-white mb-2">Basic</h3>
+      <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase mb-6">// for solo hackers</div>
+      
+      <div class="mb-10 flex items-baseline">
+        <span class="text-5xl font-bold text-primary">₹0</span>
+        <span class="text-slate-500 text-xs font-mono ml-2">/mo</span>
+      </div>
+
+      <div class="w-full text-center border-t border-slate-800 pt-6 mb-8 text-[10px] font-mono text-slate-500 tracking-widest uppercase">
+        Current Plan
+      </div>
+
+      <ul class="space-y-4 text-xs font-mono flex-grow">
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Unlimited public projects</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Standard sandbox (256MB RAM)</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Real-time collaboration · 3 users</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Code review & comments</li>
+        <li class="flex items-center text-slate-600 line-through"><svg class="w-3.5 h-3.5 mr-3 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> GPU sandbox</li>
+        <li class="flex items-center text-slate-600 line-through"><svg class="w-3.5 h-3.5 mr-3 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Voice & video calls</li>
+        <li class="flex items-center text-slate-600 line-through"><svg class="w-3.5 h-3.5 mr-3 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> Premium themes</li>
+      </ul>
+    </div>
+
+    <!-- Pro -->
+    <div class="bg-surface border border-yellow-500/50 rounded-2xl p-8 h-[540px] flex flex-col relative shadow-[0_0_40px_rgba(234,179,8,0.1)] -translate-y-4">
+      <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-500 text-black text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full flex items-center shadow-[0_0_15px_rgba(234,179,8,0.4)]">
+        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+        Most Popular
+      </div>
+      
+      <h3 class="text-2xl font-bold text-white mb-2 mt-2">Pro</h3>
+      <div class="flex justify-between items-center mb-6">
+        <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase">// for professional devs</div>
+        <div *ngIf="currentUser?.premium && currentUser?.planType === 'PRO'" class="bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-1 rounded border border-emerald-500/30 animate-pulse">
+          {{ remainingDays }} Days Left
+        </div>
+      </div>
+      
+      <div class="mb-10 flex items-baseline">
+        <span class="text-5xl font-bold text-yellow-500">{{ isYearly ? '₹11,988' : '₹1,249' }}</span>
+        <span class="text-slate-500 text-xs font-mono ml-2">{{ isYearly ? '/year' : '/mo' }}</span>
+      </div>
+
+      <button (click)="upgradeToPro()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs tracking-widest uppercase py-3 rounded mb-8 transition-colors">
+        {{ currentUser?.premium ? 'Manage Plan' : 'Upgrade to Pro' }}
+      </button>
+
+      <ul class="space-y-4 text-xs font-mono flex-grow">
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Everything in Basic</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> High Performance (4GB · 4 vCPU)</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> GPU sandbox (Nvidia T4)</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Voice & video collab</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Premium theme store</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Custom Docker images</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Priority execution queue</li>
+      </ul>
+    </div>
+
+    <!-- Team -->
+    <div class="bg-surface border border-slate-800 rounded-2xl p-8 h-[500px] flex flex-col relative">
+      <h3 class="text-2xl font-bold text-white mb-2">Team</h3>
+      <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase mb-6">// for high-performing crews</div>
+      
+      <div class="mb-10 flex items-baseline">
+        <span class="text-5xl font-bold text-secondary">{{ isYearly ? '₹29,988' : '₹3,249' }}</span>
+        <span class="text-slate-500 text-xs font-mono ml-2">{{ isYearly ? '/year/user' : '/mo/user' }}</span>
+      </div>
+
+      <button class="w-full bg-white hover:bg-slate-200 text-black font-bold text-xs tracking-widest uppercase py-3 rounded mb-8 transition-colors">
+        Contact Sales
+      </button>
+
+      <ul class="space-y-4 text-xs font-mono flex-grow">
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Everything in Pro</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Unlimited collaborators</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> SSO & audit logs</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Private container registry</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Dedicated GPU pools</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Advanced RBAC</li>
+        <li class="flex items-center text-slate-300"><svg class="w-4 h-4 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> SLA · 99.99% uptime</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="max-w-6xl mx-auto px-8 mb-20">
+    <div class="text-center mb-16">
+      <div class="text-secondary text-[10px] font-mono mb-4 tracking-widest uppercase">// pro.features</div>
+      <h2 class="text-4xl font-bold text-white tracking-tight mb-6">Why developers go Pro</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card 1 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-secondary/10 rounded flex items-center justify-center text-secondary mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">GPU Sandbox</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Nvidia T4 instances for ML inference, training, and heavy compute.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-yellow-500/10 rounded flex items-center justify-center text-yellow-500 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">High Performance</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">4GB RAM, 4 vCPU containers for compute-heavy builds and tests.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-emerald-500/10 rounded flex items-center justify-center text-emerald-400 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Voice & Video</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Talk to your team without leaving the editor. Floating webcam bubbles.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-rose-500/10 rounded flex items-center justify-center text-rose-400 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Theme Store</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Dracula, Monokai, Nord, Tokyo Night and more — curated for code.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-emerald-500/10 rounded flex items-center justify-center text-emerald-400 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Priority Queue</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Skip the line. Pro jobs run first on dedicated execution pools.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-purple-500/10 rounded flex items-center justify-center text-purple-400 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Custom Images</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Bring your own Docker image. Lock dependencies down to the byte.</p>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-blue-500/10 rounded flex items-center justify-center text-primary mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Bigger Teams</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Up to 25 collaborators per session on Pro. Unlimited on Team.</p>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 bg-yellow-500/10 rounded flex items-center justify-center text-yellow-500 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h4 class="text-sm font-bold text-white mb-2">Priority Support</h4>
+        <p class="text-xs text-slate-500 font-mono leading-relaxed">Slack-channel support with engineering, not bots.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-xs font-mono text-slate-500 mb-20">
+    Need something different? <a href="#" class="text-primary font-bold hover:underline">Explore the platform</a> first.
+  </div>
+
+  <!-- Manage Plan Modal -->
+  <div *ngIf="isManagePlanModalOpen" class="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div (click)="toggleManagePlanModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="bg-surface border border-slate-800 rounded-2xl p-8 max-w-md w-full relative z-10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+      
+      <div class="flex justify-between items-start mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-2">Manage Plan</h2>
+          <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase">// subscription.details</div>
+        </div>
+        <button (click)="toggleManagePlanModal()" class="text-slate-500 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="space-y-6 mb-10">
+        <div class="bg-background/50 border border-slate-800 rounded-xl p-4">
+          <div class="text-[9px] font-mono text-slate-500 tracking-widest uppercase mb-1">Active Plan</div>
+          <div class="text-xl font-bold text-yellow-500">Pro Plan</div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-background/50 border border-slate-800 rounded-xl p-4">
+            <div class="text-[9px] font-mono text-slate-500 tracking-widest uppercase mb-1">Purchased On</div>
+            <div class="text-sm font-bold text-white font-mono">{{ (currentUser?.subscriptionStart | date:'MMM dd, yyyy') || 'N/A' }}</div>
+          </div>
+          <div class="bg-background/50 border border-slate-800 rounded-xl p-4">
+            <div class="text-[9px] font-mono text-slate-500 tracking-widest uppercase mb-1">Expires On</div>
+            <div class="text-sm font-bold text-white font-mono">{{ (currentUser?.subscriptionExpiry | date:'MMM dd, yyyy') || 'N/A' }}</div>
+          </div>
+        </div>
+
+        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-6 text-center">
+          <div class="text-[10px] font-mono text-emerald-400 tracking-widest uppercase mb-2">Time Remaining</div>
+          <div class="text-4xl font-bold text-white mb-1">{{ remainingDays }}</div>
+          <div class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">Days until expiry</div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button (click)="purchaseAgain()" class="w-full bg-primary hover:bg-primary/90 text-black font-bold text-xs tracking-widest uppercase py-3.5 rounded transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+          Extend Subscription ({{ isYearly ? '₹11,988' : '₹1,249' }})
+        </button>
+        <p class="text-[9px] text-slate-500 font-mono text-center">
+          Extending will add {{ isYearly ? '12 months' : '30 days' }} to your current expiry date.
+        </p>
+      </div>
+
+  <!-- Congrats Overlay -->
+  <div *ngIf="showCongrats" class="fixed inset-0 z-[100] flex items-center justify-center px-4 overflow-hidden">
+    <div (click)="toggleCongrats()" class="absolute inset-0 bg-background/90 backdrop-blur-md"></div>
+    
+    <!-- Decorative Glow -->
+    <div class="absolute w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+
+    <div class="max-w-lg w-full bg-surface border border-yellow-500/30 rounded-3xl p-10 text-center relative z-10 shadow-[0_0_80px_rgba(234,179,8,0.2)]">
+      <!-- Animated Crown Icon -->
+      <div class="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(234,179,8,0.5)] animate-bounce">
+        <svg class="w-10 h-10 text-black" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+        </svg>
+      </div>
+
+      <h2 class="text-3xl font-bold text-white mb-4">Welcome to <span class="text-yellow-500">CodeSync Pro</span></h2>
+      <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase mb-8">// subscription_status: ACTIVATED</div>
+
+      <p class="text-sm text-slate-400 font-mono leading-relaxed mb-10">
+        Your workspace has been upgraded with GPU compute, voice collaboration, and premium themes. Your potential is now limitless.
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-10">
+        <div class="bg-background/50 border border-slate-800 rounded-xl p-4">
+          <div class="text-[9px] font-mono text-slate-500 tracking-widest uppercase mb-1">Status</div>
+          <div class="text-sm font-bold text-emerald-400">ACTIVE</div>
+        </div>
+        <div class="bg-background/50 border border-slate-800 rounded-xl p-4">
+          <div class="text-[9px] font-mono text-slate-500 tracking-widest uppercase mb-1">Access</div>
+          <div class="text-sm font-bold text-white font-mono">UNLIMITED</div>
+        </div>
+      </div>
+
+      <button (click)="toggleCongrats()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs tracking-widest uppercase py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+        Enter Pro Workspace
+      </button>
+    </div>
+  </div>
+
+</div>
