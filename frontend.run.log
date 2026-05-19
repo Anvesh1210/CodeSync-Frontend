@@ -1,0 +1,30 @@
+
+> codesync-frontend@0.0.0 start
+> ng serve --host 0.0.0.0 --port 4200
+
+[33m>[39m Building...
+[32m√[39m Building...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m            [2m | [22m [36m77.29 kB[39m[2m | [22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m          [2m | [22m [36m60.18 kB[39m[2m | [22m
+[32mchunk-PZ5AY32C.js[39m  [2m | [22m[2m-[22m               [2m | [22m[36m234 bytes[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m   [2m | [22m[1m137.70 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mchunk-PCFLMA7D.js[39m  [2m | [22m[2meditor-module[22m   [2m | [22m[36m149.45 kB[39m[2m | [22m
+[32mchunk-YTPAQEZU.js[39m  [2m | [22m[2mauth-module[22m     [2m | [22m[36m101.62 kB[39m[2m | [22m
+[32mchunk-W4DXOIN7.js[39m  [2m | [22m[2mdashboard-module[22m[2m | [22m [36m54.37 kB[39m[2m | [22m
+[32mchunk-IOHEZ5AJ.js[39m  [2m | [22m[2mprojects-module[22m [2m | [22m [36m52.02 kB[39m[2m | [22m
+[32mchunk-VXH6NITM.js[39m  [2m | [22m[2mpricing-module[22m  [2m | [22m [36m46.64 kB[39m[2m | [22m
+[32mchunk-N65M45GZ.js[39m  [2m | [22m[2madmin-module[22m    [2m | [22m [36m29.98 kB[39m[2m | [22m
+[32mchunk-B7S67EBN.js[39m  [2m | [22m[2mprofile-module[22m  [2m | [22m [36m15.76 kB[39m[2m | [22m
+[32mchunk-BS7OLS56.js[39m  [2m | [22m[2m-[22m               [2m | [22m  [36m2.82 kB[39m[2m | [22m
+[32mchunk-MUBWX244.js[39m  [2m | [22m[2m-[22m               [2m | [22m[36m273 bytes[39m[2m | [22m
+
+Application bundle generation complete. [8.098 seconds] - 2026-04-29T07:04:41.500Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.137.238:[1m4200[22m/[39m
