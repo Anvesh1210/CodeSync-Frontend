@@ -1,0 +1,76 @@
+<div class="min-h-full bg-background p-8">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="flex items-start justify-between gap-4 mb-8">
+      <div>
+        <div class="text-primary text-[10px] font-mono tracking-widest uppercase mb-3">// project mesh</div>
+        <h1 class="text-4xl font-bold text-white tracking-tight mb-2">Discover Projects</h1>
+        <p class="text-slate-400 font-mono text-sm">Browse public workspaces, search by name, and open details.</p>
+      </div>
+      <button
+        (click)="openCreateProject()"
+        class="bg-primary hover:bg-primary/90 text-black px-4 py-2 rounded text-xs font-bold tracking-widest uppercase">
+        New Project
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <input
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onFiltersChanged()"
+        type="text"
+        placeholder="Search name or description..."
+        class="md:col-span-2 px-4 py-3 bg-surface border border-slate-800 rounded text-slate-200 placeholder-slate-500 focus:outline-none focus:border-primary font-mono text-sm" />
+      <input
+        [(ngModel)]="ownerQuery"
+        (ngModelChange)="onFiltersChanged()"
+        type="text"
+        placeholder="Filter by owner id..."
+        class="px-4 py-3 bg-surface border border-slate-800 rounded text-slate-200 placeholder-slate-500 focus:outline-none focus:border-primary font-mono text-sm" />
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button
+        *ngFor="let filter of filters"
+        (click)="setFilter(filter)"
+        [class]="activeFilter === filter ? 'border-primary text-primary' : 'border-slate-800 text-slate-400 hover:text-slate-200'"
+        class="px-3 py-1 rounded-full border bg-surface/50 font-mono text-xs transition-colors">
+        {{ filter }}
+      </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="mb-5 border border-red-500/50 bg-red-500/10 rounded px-4 py-3 text-red-400 text-sm font-mono">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-xs font-mono text-slate-500 mb-4">
+      <span *ngIf="!isLoading">{{ projects.length }} result(s)</span>
+      <span *ngIf="isLoading">Loading projects...</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div
+        *ngFor="let p of projects"
+        (click)="openProject(p.id)"
+        class="border border-slate-800 bg-surface rounded-lg p-5 cursor-pointer hover:border-slate-600 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h3 class="text-white text-lg font-bold">{{ p.name }}</h3>
+            <div class="text-slate-500 text-[10px] font-mono mt-1">{{ p.author }}</div>
+          </div>
+          <span class="text-[10px] border border-slate-700 px-2 py-1 rounded font-mono text-slate-300">{{ p.visibility }}</span>
+        </div>
+        <p *ngIf="p.description" class="text-slate-400 text-sm font-mono min-h-12">{{ p.description }}</p>
+        <div class="flex justify-between items-center mt-5">
+          <div class="flex items-center gap-2 text-[10px] font-mono text-slate-300">
+            <span class="w-2 h-2 rounded-full" [ngClass]="languageDotClass(p.language)"></span>
+            <span>{{ p.language }}</span>
+          </div>
+          <div class="flex items-center gap-4 text-[10px] font-mono text-slate-500">
+            <span>★ {{ p.stars | number }}</span>
+            <span>⑂ {{ p.forks }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
