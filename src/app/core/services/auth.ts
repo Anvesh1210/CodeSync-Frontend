@@ -127,6 +127,7 @@ export class AuthService {
     }).pipe(
       tap(user => {
         localStorage.setItem('user', JSON.stringify(user));
+        if (user.role) localStorage.setItem('role', user.role);
         this.currentUserSubject.next(user);
       })
     );
@@ -139,6 +140,7 @@ export class AuthService {
     }).pipe(
       tap(user => {
         localStorage.setItem('user', JSON.stringify(user));
+        if (user.role) localStorage.setItem('role', user.role);
         this.currentUserSubject.next(user);
       })
     );

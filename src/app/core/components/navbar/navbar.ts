@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared-module';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,7 @@ import { ThemeService } from '../../services/theme.service';
 export class NavbarComponent implements OnInit {
   private router = inject(Router);
   public themeService = inject(ThemeService);
+  private authService = inject(AuthService);
   
   isAuthenticated = false;
   userInitials = '';
@@ -28,6 +30,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.checkAuth();
     this.updateVisibility();
+
+    this.authService.currentUser$.subscribe(() => {
+      this.checkAuth();
+    });
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

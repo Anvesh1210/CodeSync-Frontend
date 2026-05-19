@@ -1,5 +1,6 @@
 <div class="min-h-full w-full bg-background relative overflow-x-hidden pt-20 pb-32">
   
+  <ng-container *ngIf="!showCongrats">
   <!-- Header -->
   <div class="max-w-4xl mx-auto text-center px-8 mb-16">
     <div class="text-yellow-500 text-[10px] font-mono tracking-widest uppercase mb-6">// pricing.config</div>
@@ -249,13 +250,14 @@
           Extending will add {{ isYearly ? '12 months' : '30 days' }} to your current expiry date.
         </p>
       </div>
+    </div>
+  </div>
+  </ng-container>
 
-  <!-- Congrats Overlay -->
-  <div *ngIf="showCongrats" class="fixed inset-0 z-[100] flex items-center justify-center px-4 overflow-hidden">
-    <div (click)="toggleCongrats()" class="absolute inset-0 bg-background/90 backdrop-blur-md"></div>
-    
+  <!-- Congrats Application View -->
+  <div *ngIf="showCongrats" class="flex items-center justify-center min-h-[70vh] px-4 relative overflow-hidden">
     <!-- Decorative Glow -->
-    <div class="absolute w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse pointer-events-none"></div>
 
     <div class="max-w-lg w-full bg-surface border border-yellow-500/30 rounded-3xl p-10 text-center relative z-10 shadow-[0_0_80px_rgba(234,179,8,0.2)]">
       <!-- Animated Crown Icon -->
@@ -283,7 +285,7 @@
         </div>
       </div>
 
-      <button (click)="toggleCongrats()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs tracking-widest uppercase py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+      <button routerLink="/dashboard" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs tracking-widest uppercase py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(234,179,8,0.3)]">
         Enter Pro Workspace
       </button>
     </div>

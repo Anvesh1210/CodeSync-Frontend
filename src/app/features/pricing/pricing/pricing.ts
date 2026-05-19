@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { PaymentService } from '../../../core/services/payment.service';
 import { AuthService } from '../../../core/services/auth';
 import { Router } from '@angular/router';
@@ -17,7 +17,9 @@ export class PricingComponent implements OnInit {
   constructor(
     private paymentService: PaymentService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -106,10 +108,16 @@ export class PricingComponent implements OnInit {
         signature: paymentResponse.razorpay_signature
       }).toPromise();
 
-      this.showCongrats = true;
-      
-      // Refresh user data
-      this.authService.validateToken().subscribe();
+      this.ngZone.run(() => {
+        this.showCongrats = true;
+        this.cdr.detectChanges();
+        // Refresh user data
+        this.authService.validateToken().subscribe({
+          next: () => {
+            this.cdr.detectChanges();
+          }
+        });
+      });
 
     } catch (error) {
       console.error('Payment failed:', error);
