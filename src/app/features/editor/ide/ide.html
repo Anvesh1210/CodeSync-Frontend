@@ -1,0 +1,500 @@
+<div class="h-full w-full flex flex-col bg-background text-slate-300 font-sans overflow-hidden">
+  
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="absolute inset-0 bg-background/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center">
+    <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+    <div class="text-primary font-mono text-sm tracking-[0.2em] uppercase animate-pulse">Loading Workspace...</div>
+  </div>
+
+  <!-- Editor Top Bar -->
+  <div *ngIf="!isZenMode" class="h-12 border-b border-slate-800 flex items-center justify-between px-4 bg-background z-10 shrink-0">
+    <!-- Left Section: Project Info & Actions -->
+    <div class="flex items-center space-x-5">
+      <div class="flex items-center">
+        <a routerLink="/dashboard" class="p-1.5 text-slate-500 hover:text-white hover:bg-slate-800 rounded transition-all mr-3" title="Back to Dashboard">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </a>
+        <div class="flex items-center text-sm font-mono tracking-tight">
+          <span class="text-slate-500 mr-2">@{{ ownerId.substring(0,8) }}... /</span>
+          <span class="text-white font-bold">{{ projectName }}</span>
+          
+          <!-- Role Badge -->
+          <div class="ml-3 flex items-center">
+            <span *ngIf="userRole === 'OWNER'" class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest border border-primary/20">
+              Owner
+            </span>
+            <span *ngIf="userRole === 'CONTRIBUTOR'" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[9px] font-black uppercase tracking-widest border border-emerald-500/20">
+              Contributor
+            </span>
+            <span *ngIf="userRole === 'VIEWER'" class="px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500/80 text-[9px] font-black uppercase tracking-widest border border-yellow-500/20">
+              Read Only
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Join Button (Viewers) -->
+      <button *ngIf="userRole === 'VIEWER'" 
+              (click)="joinAsContributor()"
+              class="flex items-center px-3 py-1 bg-primary text-black rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-primary/20">
+        <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+        Join Now
+      </button>
+
+      <!-- Layout & Branch -->
+      <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-1 bg-slate-800/20 border border-slate-800/50 rounded-lg p-1 backdrop-blur-sm">
+          <button (click)="toggleLeftSidebar()" 
+                  [class.bg-slate-700]="isLeftSidebarVisible" 
+                  [class.text-primary]="isLeftSidebarVisible" 
+                  [class.shadow-sm]="isLeftSidebarVisible"
+                  [class.text-slate-500]="!isLeftSidebarVisible" 
+                  class="px-2 py-1 rounded-md transition-all hover:text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+          </button>
+          <button (click)="toggleRightSidebar()" 
+                  [class.bg-slate-700]="isRightSidebarVisible" 
+                  [class.text-primary]="isRightSidebarVisible" 
+                  [class.shadow-sm]="isRightSidebarVisible"
+                  [class.text-slate-500]="!isRightSidebarVisible" 
+                  class="px-2 py-1 rounded-md transition-all hover:text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17V7m0 10a2 2 0 01-2 2h-2a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M15 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-1.5 border border-slate-800 bg-slate-800/20 px-2 py-1 rounded text-[10px] font-mono text-slate-400 cursor-pointer hover:border-slate-600 transition-colors">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+          <span class="font-bold uppercase tracking-widest">main</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Status & Personal Actions -->
+    <div class="flex items-center space-x-4">
+      <!-- Collaboration Status -->
+      <div class="flex items-center bg-slate-800/30 px-2.5 py-1 rounded-full border border-slate-800/50">
+        <span class="flex h-1.5 w-1.5 relative mr-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" [class.bg-emerald-400]="connectionStatus === 'connected'" [class.bg-red-400]="connectionStatus === 'disconnected'" [class.bg-yellow-400]="connectionStatus === 'connecting'"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5" [class.bg-emerald-500]="connectionStatus === 'connected'" [class.bg-red-500]="connectionStatus === 'disconnected'" [class.bg-yellow-500]="connectionStatus === 'connecting'"></span>
+        </span>
+        <div class="flex flex-col text-left">
+          <span class="text-[9px] font-black text-white leading-none tracking-tight">{{ participants.length }} CONNECTED</span>
+          <span class="text-[7px] font-mono text-slate-500 leading-tight uppercase">{{ latency }}ms Latency</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <!-- System Group -->
+        <div class="flex items-center space-x-3">
+          <button class="flex items-center space-x-1.5 text-[9px] font-bold text-slate-500 hover:text-white uppercase tracking-wider transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            <span>Docker</span>
+            <svg class="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+          </button>
+          
+          <button (click)="openThemeStore()" class="flex items-center space-x-1.5 text-[9px] font-bold text-slate-500 hover:text-white uppercase tracking-wider transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+            <span>Theme</span>
+          </button>
+
+          <button class="flex items-center space-x-1.5 text-[9px] font-black text-primary hover:text-primary/80 uppercase tracking-widest transition-all bg-primary/10 px-3 py-1.5 rounded border border-primary/20">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+            <span>Share</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 flex overflow-hidden relative">
+    
+    <!-- Left Sidebar (Explorer) -->
+    <div *ngIf="!isZenMode && isLeftSidebarVisible" class="w-64 border-r border-slate-800 bg-surface flex flex-col shrink-0">
+        <div class="flex items-center justify-between px-4 h-10 border-b border-slate-800 overflow-visible">
+          <span class="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">Explorer</span>
+          <div class="flex items-center space-x-1 relative create-dropdown-container">
+            <button 
+              *ngIf="userRole !== 'VIEWER'"
+              (mousedown)="toggleCreateDropdown($event)" 
+              title="New..." 
+              class="create-toggle p-1.5 text-slate-500 hover:text-white transition-colors rounded hover:bg-slate-800"
+              [class.bg-slate-800]="isCreateDropdownOpen"
+              [class.text-white]="isCreateDropdownOpen">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </button>
+            
+            <!-- Create Dropdown -->
+            <div *ngIf="isCreateDropdownOpen" class="absolute top-full right-0 mt-1 w-32 bg-slate-900 border border-slate-700 rounded shadow-xl z-[100] py-1">
+              <button (click)="initCreation('file')" class="w-full text-left px-3 py-1.5 text-[10px] font-mono text-slate-300 hover:bg-primary/20 hover:text-white flex items-center">
+                <svg class="w-3 h-3 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                New File
+              </button>
+              <button (click)="initCreation('folder')" class="w-full text-left px-3 py-1.5 text-[10px] font-mono text-slate-300 hover:bg-primary/20 hover:text-white flex items-center">
+                <svg class="w-3 h-3 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h2.293a1 1 0 01.707.293L14 5.586A1 1 0 0114.707 6H17a2 2 0 012 2v11a2 2 0 01-2 2z"></path></svg>
+                New Folder
+              </button>
+            </div>
+
+            <button (click)="loadProjectData()" title="Refresh" class="p-1 text-slate-500 hover:text-white transition-colors rounded hover:bg-slate-800">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Inline Creation Input -->
+        <div *ngIf="creationMode" class="px-4 py-2 border-b border-slate-800 bg-slate-900/50">
+          <div class="flex items-center space-x-2">
+            <svg *ngIf="creationMode === 'folder'" class="w-3.5 h-3.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path></svg>
+            <svg *ngIf="creationMode === 'file'" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            
+            <input 
+              #creationInput
+              (keyup.enter)="confirmCreation(creationInput.value)" 
+              (keyup.escape)="cancelCreation()"
+              (blur)="confirmCreation(creationInput.value)"
+              placeholder="name..."
+              class="flex-1 bg-transparent border-none text-[11px] font-mono text-white focus:outline-none placeholder:text-slate-600"
+              autofocus>
+          </div>
+          <div class="mt-1 flex justify-between text-[8px] font-mono text-slate-500 uppercase tracking-tighter">
+            <span>Enter to save</span>
+            <span>Esc to cancel</span>
+          </div>
+        </div>
+
+      <app-file-explorer 
+        [files]="files" 
+        [activeFileId]="activeFileId" 
+        [selectedNodeId]="selectedNode?.fileId || null"
+        (nodeSelected)="handleNodeSelected($event)"
+        (deleteRequested)="deleteNode($event)"
+        (renameConfirmed)="handleRenameConfirmed($event)">
+      </app-file-explorer>
+    </div>
+
+    <!-- Center Editor Area -->
+    <div class="editor-container bg-background relative">
+      <!-- Editor Tabs & Toolbar -->
+      <div class="h-8 border-b border-slate-800 flex items-center justify-between bg-surface shrink-0">
+        <div class="flex items-center h-full overflow-x-auto no-scrollbar">
+          <div *ngFor="let tab of openTabs" 
+               (click)="switchTab(tab)"
+               class="px-4 py-2 bg-surface border-r border-slate-800 text-xs font-mono flex items-center h-full cursor-pointer hover:bg-slate-800 transition-colors group relative"
+               [class.bg-background]="tab.fileId === activeFileId"
+               [class.border-t-2]="tab.fileId === activeFileId"
+               [class.border-t-primary]="tab.fileId === activeFileId"
+               [class.text-primary]="tab.fileId === activeFileId"
+               [class.text-slate-400]="tab.fileId !== activeFileId">
+            <span class="truncate max-w-[120px]">{{ tab.name }}</span>
+            <button (click)="closeFile(tab, $event)" class="ml-3 opacity-0 group-hover:opacity-100 hover:text-white transition-opacity">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          <div *ngIf="openTabs.length === 0" class="px-4 py-2 text-slate-500 text-xs font-mono">No file open</div>
+        </div>
+        
+        <div class="flex items-center space-x-2 px-2">
+          <div *ngIf="saveStatus" class="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider transition-all"
+               [class.bg-emerald-500/10]="saveStatus.includes('Success')"
+               [class.text-emerald-400]="saveStatus.includes('Success')"
+               [class.bg-red-500/10]="saveStatus.includes('Error') || saveStatus.includes('Failed')"
+               [class.text-red-400]="saveStatus.includes('Error') || saveStatus.includes('Failed')"
+               [class.bg-primary/10]="saveStatus.includes('Saving')"
+               [class.text-primary]="saveStatus.includes('Saving')">
+            {{ saveStatus }}
+          </div>
+          <button (click)="saveActiveFile()" [disabled]="!activeFile || isSaving || userRole === 'VIEWER'" class="flex items-center space-x-1.5 px-3 py-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title="Save (Ctrl+S)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+            <span class="text-[10px] font-bold tracking-widest uppercase">Save</span>
+          </button>
+          <button (click)="toggleTerminal()" class="p-1.5 text-slate-400 hover:text-white transition-colors" title="Toggle Terminal">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          </button>
+          <button (click)="terminal.runCode(editor?.getValue())" [disabled]="!activeFile || userRole === 'VIEWER'" class="flex items-center space-x-1.5 px-3 py-1 bg-primary/20 hover:bg-primary/30 text-primary rounded text-[10px] font-bold tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed transition-all" title="Run Code">
+            <svg class="w-3 h-3 fill-primary" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+            <span>Run</span>
+          </button>
+          <button (click)="toggleZenMode()" class="p-1.5 text-slate-400 hover:text-white transition-colors rounded hover:bg-slate-800" [class.text-primary]="isZenMode" [title]="isZenMode ? 'Exit Fullscreen (Esc)' : 'Fullscreen / Zen Mode'">
+            <svg *ngIf="!isZenMode" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+            <svg *ngIf="isZenMode" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Monaco Container -->
+      <div class="monaco-editor-wrapper relative">
+        <ngx-monaco-editor 
+          *ngIf="!isLoading"
+          [options]="editorOptions"
+          (onInit)="onEditorInit($event)">
+        </ngx-monaco-editor>
+
+        <!-- Read Only Banner -->
+        <div *ngIf="userRole === 'VIEWER'" class="absolute bottom-6 right-6 bg-slate-900/95 border border-slate-700 backdrop-blur-lg px-5 py-3 rounded-2xl flex items-center space-x-4 shadow-2xl z-[50] animate-in slide-in-from-bottom-10 duration-500">
+          <div class="flex items-center space-x-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_10px_rgba(234,179,8,0.5)]"></div>
+            <div class="flex flex-col">
+              <span class="text-[10px] font-mono font-black text-slate-200 tracking-[0.2em] uppercase leading-none mb-1">Read Only</span>
+              <span class="text-[9px] font-mono text-slate-500 leading-none">Join as contributor to edit</span>
+            </div>
+          </div>
+          <button (click)="joinAsContributor()" class="px-4 py-2 bg-primary text-black rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">
+            Join Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Resize Handle -->
+      <div *ngIf="showTerminal" 
+           (mousedown)="startTerminalResize($event)"
+           class="h-1 bg-slate-800 hover:bg-primary/50 cursor-row-resize z-30 transition-colors">
+      </div>
+
+      <!-- Execution Bar -->
+      <div [class.hidden]="!showTerminal" 
+           [style.height.px]="isTerminalExpanded ? null : terminalHeight"
+           [class.h-[80vh]]="isTerminalExpanded"
+           class="border-t border-slate-800 bg-surface flex flex-col shrink-0 z-10 w-full relative transition-all duration-300">
+        <div class="absolute top-2 right-2 flex items-center space-x-1 z-20">
+          <button (click)="toggleTerminalExpansion()" class="p-1.5 text-slate-500 hover:text-white transition-colors bg-surface/80 rounded" [title]="isTerminalExpanded ? 'Collapse' : 'Expand'">
+            <svg *ngIf="!isTerminalExpanded" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+            <svg *ngIf="isTerminalExpanded" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 14h6m0 0v6m0-6l-7 7m17-11h-6m0 0V4m0 6l7-7M4 10h6m0 0V4m0 6l-7-7m17 11h-6m0 0v6m0-6l7 7"></path></svg>
+          </button>
+          <button (click)="toggleTerminal()" class="p-1.5 text-slate-500 hover:text-white transition-colors bg-surface/80 rounded" title="Close">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <app-execution-terminal
+          #terminal
+          class="block h-full"
+          [projectId]="projectId"
+          [fileId]="activeFileId"
+          [language]="activeFile?.language || ''"
+          [fileName]="activeFile?.name || ''"
+          [sourceCode]="editor?.getValue() || ''"
+          (onRunRequested)="terminal.runCode(editor?.getValue())"
+          (onStart)="showTerminal = true">
+        </app-execution-terminal>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div *ngIf="!isZenMode && isRightSidebarVisible" class="w-80 border-l border-slate-800 bg-surface flex flex-col shrink-0 relative z-20">
+      
+      <!-- Tabs -->
+      <div class="h-11 border-b border-slate-800 flex items-center justify-between px-2 shrink-0">
+        <button (click)="activeRightTab = 'LIVE'" [class.bg-primary]="activeRightTab === 'LIVE'" [class.text-black]="activeRightTab === 'LIVE'" [class.text-primary]="activeRightTab !== 'LIVE'" [class.hover:bg-slate-800]="activeRightTab !== 'LIVE'" class="flex-1 flex justify-center items-center py-2 mx-1 rounded text-[10px] font-mono font-bold tracking-widest uppercase transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          Live
+        </button>
+        <button (click)="activeRightTab = 'VCS'" [class.bg-emerald-500]="activeRightTab === 'VCS'" [class.text-black]="activeRightTab === 'VCS'" [class.text-slate-500]="activeRightTab !== 'VCS'" [class.hover:bg-slate-800]="activeRightTab !== 'VCS'" class="flex-1 flex justify-center items-center py-2 mx-1 rounded text-[10px] font-mono font-bold tracking-widest uppercase transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+          VCS
+        </button>
+        <button (click)="activeRightTab = 'REVIEW'" [class.bg-yellow-500]="activeRightTab === 'REVIEW'" [class.text-black]="activeRightTab === 'REVIEW'" [class.text-slate-500]="activeRightTab !== 'REVIEW'" [class.hover:bg-slate-800]="activeRightTab !== 'REVIEW'" class="flex-1 flex justify-center items-center py-2 mx-1 rounded text-[10px] font-mono font-bold tracking-widest uppercase transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+          Review
+        </button>
+      </div>
+
+      <!-- LIVE Tab Content -->
+      <div *ngIf="activeRightTab === 'LIVE'" class="flex-1 overflow-y-auto p-4 space-y-8">
+        
+        <!-- Voice/Video Upsell -->
+        <div class="border border-yellow-500/30 bg-yellow-500/5 rounded-xl p-4 flex items-start space-x-3">
+          <svg class="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+          <div class="flex-1">
+            <h4 class="text-sm font-bold text-white mb-0.5">Voice & Video calls</h4>
+            <p class="text-[10px] font-mono text-slate-500">Available on Pro</p>
+          </div>
+          <span class="bg-yellow-500/20 text-yellow-500 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider mt-0.5">PRO</span>
+        </div>
+
+        <!-- Active Users -->
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">ACTIVE · {{ participants.length }}</div>
+            <!-- Session Active Badge -->
+            <div *ngIf="currentSessionId" class="flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2 py-1 rounded-full">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider">Live</span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div *ngFor="let participant of participants" class="flex items-center justify-between group">
+              <div class="flex items-center space-x-3">
+                <div [style.border-color]="getUserColor(participant.userId)" class="w-10 h-10 rounded-full border-2 bg-background flex items-center justify-center font-mono text-sm relative" [style.color]="getUserColor(participant.userId)">
+                  {{ getInitials(participant.userName || participant.userId) }}
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white leading-none mb-1">{{ participant.userName || 'User ' + participant.userId.substring(0,4) }}</h4>
+                  <p class="text-[10px] font-mono text-slate-500 leading-none">
+                    {{ participant.role }} · {{ participant.cursorLine || 1 }}:{{ participant.cursorCol || 1 }}
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button 
+                  *ngIf="isSessionOwner() && participant.userId !== (ownerId)"
+                  (click)="kickParticipant(participant.userId)"
+                  class="opacity-0 group-hover:opacity-100 p-1.5 text-slate-500 hover:text-red-500 transition-all"
+                  title="Kick Participant">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"></path></svg>
+                </button>
+                <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+              </div>
+            </div>
+
+            <!-- No Session: Show Start button -->
+            <div *ngIf="!currentSessionId" class="py-10 text-center">
+              <p class="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-4">No active session</p>
+              
+              <!-- OWNER/CONTRIBUTOR can start -->
+              <button *ngIf="userRole !== 'VIEWER'" 
+                      (click)="startSession()" 
+                      class="px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded text-[10px] font-bold tracking-widest uppercase transition-all">
+                Start Session
+              </button>
+
+              <!-- VIEWER must join first -->
+              <div *ngIf="userRole === 'VIEWER'" class="flex flex-col items-center">
+                <p class="text-[9px] text-slate-500 italic mb-4 max-w-[150px]">You must be a contributor to start collaboration sessions.</p>
+                <button (click)="joinAsContributor()" 
+                        class="px-4 py-2 bg-primary text-black rounded text-[10px] font-bold tracking-widest uppercase transition-all shadow-lg shadow-primary/10 hover:scale-105 active:scale-95">
+                  Join as Contributor
+                </button>
+              </div>
+            </div>
+
+            <!-- Session active but no participants yet: joining spinner -->
+            <div *ngIf="participants.length === 0 && currentSessionId" class="py-6 text-center">
+              <div class="inline-block w-4 h-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin mb-3"></div>
+              <p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Joining session...</p>
+            </div>
+          </div>
+
+          <!-- Session Control Buttons (shown when a session is active) -->
+          <div *ngIf="currentSessionId" class="mt-6 space-y-2">
+            <!-- OWNER: Terminate Session -->
+            <button 
+              *ngIf="isSessionOwner()"
+              id="btn-terminate-session"
+              (click)="terminateSession()"
+              [disabled]="isTerminating"
+              class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 bg-red-600/20 hover:bg-red-600/40 border border-red-600/40 hover:border-red-500 text-red-400 hover:text-red-300 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg *ngIf="!isTerminating" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 00-1 1v2a1 1 0 001 1h6a1 1 0 001-1v-2a1 1 0 00-1-1H9z"/>
+              </svg>
+              <div *ngIf="isTerminating" class="w-3 h-3 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin"></div>
+              <span>{{ isTerminating ? 'Terminating...' : 'Terminate Session' }}</span>
+            </button>
+            <!-- NON-OWNER: Leave Session -->
+            <button 
+              *ngIf="!isSessionOwner()"
+              id="btn-leave-session"
+              (click)="leaveCurrentSession()"
+              class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 bg-slate-700/40 hover:bg-slate-700/70 border border-slate-600/40 hover:border-slate-500 text-slate-400 hover:text-slate-200 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+              <span>Leave Session</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Project Contributors -->
+        <div class="pt-8 border-t border-slate-800/50">
+          <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-4">CONTRIBUTORS · {{ contributors.length }}</div>
+          <div class="space-y-3">
+            <div *ngFor="let member of contributors" class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-mono text-xs text-slate-400">
+                {{ getInitials(member.username || member.userId) }}
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-300">{{ member.username || 'User ' + member.userId.substring(0,4) }}</span>
+                  <span class="text-[8px] font-mono px-1.5 py-0.5 rounded uppercase tracking-wider" 
+                        [class.bg-primary/10]="member.role === 'OWNER'" 
+                        [class.text-primary]="member.role === 'OWNER'"
+                        [class.bg-slate-700]="member.role !== 'OWNER'"
+                        [class.text-slate-400]="member.role !== 'OWNER'">
+                    {{ member.role }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/50">
+          <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-3">INVITE TO SESSION</div>
+          
+          <!-- Invite Link -->
+          <div *ngIf="currentSessionId" class="border border-slate-700 bg-background rounded-lg p-1 relative mb-3 group/link">
+            <input type="text" readonly class="w-full bg-transparent border-none text-white font-mono text-[10px] p-2 focus:outline-none" [value]="'https://codesync.app/join/' + currentSessionId">
+            <button (click)="copyInviteLink()" class="absolute right-2 top-2 text-slate-500 group-hover/link:text-white transition-colors" title="Copy Link">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </div>
+          <div *ngIf="!currentSessionId" class="text-[9px] font-mono text-slate-600 uppercase italic py-2 mb-2">Start a session to invite others</div>
+
+          <!-- Direct Invite -->
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2">
+              <div class="flex-1 relative">
+                <input 
+                  type="text" 
+                  [(ngModel)]="inviteUsername"
+                  [disabled]="!currentSessionId || isInviting"
+                  class="w-full border border-slate-800 bg-background rounded text-xs font-mono text-slate-300 p-2 pl-8 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-30" 
+                  placeholder="Username...">
+                <svg class="w-4 h-4 absolute left-2 top-2.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+              </div>
+              <button 
+                (click)="inviteUser()" 
+                [disabled]="!currentSessionId || !inviteUsername.trim() || isInviting"
+                class="bg-primary text-black disabled:bg-slate-800 disabled:text-slate-500 text-[10px] font-bold tracking-widest px-4 py-2 rounded transition-all uppercase shadow-lg shadow-primary/10">
+                {{ isInviting ? 'Sending...' : 'Invite' }}
+              </button>
+            </div>
+            <p class="text-[9px] font-mono text-slate-600 px-1">Invite contributors by their username</p>
+          </div>
+        </div>
+
+      </div>
+
+      <app-vcs-panel *ngIf="activeRightTab === 'VCS'" [projectId]="projectId" [fileId]="activeFileId" [sourceCode]="editor?.getValue()" (contentRestored)="onSnapshotRestored($event)"></app-vcs-panel>
+
+      <!-- REVIEW Tab Content -->
+      <app-review-panel *ngIf="activeRightTab === 'REVIEW'" [projectId]="projectId" [fileId]="activeFileId"></app-review-panel>
+
+    </div>
+
+  </div>
+
+  <app-theme-store-modal *ngIf="isThemeStoreOpen" (close)="closeThemeStore()" (themeSelected)="onThemeSelected($event)"></app-theme-store-modal>
+
+  <!-- Delete Confirmation Modal -->
+  <div *ngIf="nodeToDeleteId" class="fixed inset-0 bg-background/60 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+    <div class="bg-surface border border-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+      <div class="p-6">
+        <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Delete Item?</h3>
+        <p class="text-sm text-slate-400 font-mono mb-6">This action cannot be undone. Are you sure you want to permanently delete this item?</p>
+        
+        <div class="flex space-x-3">
+          <button (click)="cancelDelete()" class="flex-1 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition-colors">
+            Cancel
+          </button>
+          <button (click)="confirmDelete()" class="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition-colors shadow-lg shadow-red-600/20">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
