@@ -1,0 +1,44 @@
+<div class="relative">
+  <!-- Bell Icon -->
+  <button (click)="toggleDropdown()" class="text-slate-400 hover:text-white transition-colors relative focus:outline-none">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+    </svg>
+    <span *ngIf="unreadCount > 0" class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-500 rounded-full border border-surface transform translate-x-1/4 -translate-y-1/4">
+      {{ unreadCount }}
+    </span>
+  </button>
+
+  <!-- Dropdown Panel -->
+  <div *ngIf="isOpen" class="absolute right-0 mt-2 w-80 bg-surface border border-slate-700 rounded-lg shadow-xl z-50 overflow-hidden">
+    <div class="px-4 py-3 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
+      <h3 class="text-sm font-bold text-white">Notifications</h3>
+      <button (click)="markAllAsRead()" class="text-[10px] font-mono text-primary hover:text-white transition-colors">Mark all read</button>
+    </div>
+    
+    <div class="max-h-64 overflow-y-auto">
+      <div *ngFor="let notification of notifications" 
+           (click)="markAsRead(notification)"
+           class="px-4 py-3 border-b border-slate-800 hover:bg-slate-800/30 transition-colors flex items-start cursor-pointer" 
+           [ngClass]="{'bg-primary/5': !notification.isRead}">
+        <div class="w-2 h-2 rounded-full mt-1.5 mr-3 shrink-0" [ngClass]="notification.isRead ? 'bg-slate-600' : 'bg-primary'"></div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold text-white mb-0.5" *ngIf="notification.title">{{ notification.title }}</p>
+          <p class="text-[11px] text-slate-300 font-mono leading-tight">{{ notification.message }}</p>
+          
+          <!-- Action Buttons for Invitations -->
+          <div *ngIf="notification.type === 'INVITATION' && !notification.isRead" class="mt-2 flex space-x-2">
+            <button (click)="acceptInvitation(notification, $event)" class="px-3 py-1 bg-primary text-black text-[9px] font-bold rounded uppercase hover:bg-white transition-colors">Accept</button>
+            <button (click)="declineInvitation(notification, $event)" class="px-3 py-1 bg-slate-700 text-white text-[9px] font-bold rounded uppercase hover:bg-slate-600 transition-colors">Decline</button>
+          </div>
+
+          <span class="text-[9px] text-slate-500 font-mono mt-1 block">{{ formatTime(notification.createdAt) }}</span>
+        </div>
+      </div>
+      
+      <div *ngIf="notifications.length === 0" class="px-4 py-6 text-center text-slate-500 text-[10px] font-mono uppercase tracking-widest">
+        No notifications
+      </div>
+    </div>
+  </div>
+</div>
