@@ -1,0 +1,831 @@
+<div class="admin-root">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-icon">CS</div>
+      <span class="brand-name">CodeSync</span>
+      <span class="brand-badge">Admin</span>
+    </div>
+    <div class="topbar-right">
+      <span class="admin-greeting">Welcome, <span>{{ adminName }}</span></span>
+      <button class="btn-logout" (click)="logout()">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="nav-section-label">Platform</div>
+
+      <button class="nav-item" [class.active]="activeTab==='overview'" (click)="switchTab('overview')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        Overview
+      </button>
+
+      <div class="nav-section-label">Manage</div>
+
+      <button class="nav-item" [class.active]="activeTab==='users'" (click)="switchTab('users')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        Users
+      </button>
+
+      <button class="nav-item" [class.active]="activeTab==='projects'" (click)="switchTab('projects')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+        Projects
+      </button>
+
+      <button class="nav-item" [class.active]="activeTab==='sessions'" (click)="switchTab('sessions')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
+        </svg>
+        Sessions
+      </button>
+
+      <button class="nav-item" [class.active]="activeTab==='executions'" (click)="switchTab('executions')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+        </svg>
+        Executions
+      </button>
+
+      <button class="nav-item" [class.active]="activeTab==='notifications'" (click)="switchTab('notifications')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        Notifications
+      </button>
+
+      <button class="nav-item" [class.active]="activeTab==='payments'" (click)="switchTab('payments')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+        </svg>
+        Payments
+      </button>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- ═══════════════ OVERVIEW TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='overview'">
+        <div class="page-header">
+          <h1 class="page-title">Platform Overview</h1>
+          <p class="page-subtitle">Real-time snapshot of CodeSync platform activity</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Total Users</span>
+              <div class="stat-icon blue">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value">{{ metrics.totalUsers }}</div>
+            <div class="stat-desc">Registered accounts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Active Sessions</span>
+              <div class="stat-icon green">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value">{{ metrics.activeSessions }}</div>
+            <div class="stat-desc">Live collaboration sessions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Projects</span>
+              <div class="stat-icon purple">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value">{{ metrics.totalProjects }}</div>
+            <div class="stat-desc">Total projects created</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Executions</span>
+              <div class="stat-icon orange">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value">{{ metrics.codeRuns }}</div>
+            <div class="stat-desc">Code runs tracked</div>
+          </div>
+        </div>
+
+        <!-- Overview quick tables -->
+        <div class="overview-grid">
+
+          <!-- Recent Users -->
+          <div class="section">
+            <div class="section-head">
+              <h3 class="section-title">Recent Users</h3>
+              <button class="btn-refresh" (click)="loadUsers()">Refresh</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let u of users | slice:0:5">
+                    <td>
+                      <div class="user-cell">
+                        <div class="avatar">{{ (u.username || 'U')[0].toUpperCase() }}</div>
+                        <span>{{ u.username }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge" [ngClass]="u.role==='ADMIN' ? 'badge-admin' : 'badge-dev'">
+                        {{ u.role }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge" [ngClass]="isUserActive(u) ? 'badge-success' : 'badge-error'">
+                        {{ isUserActive(u) ? 'Active' : 'Suspended' }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="loading['users']" class="loading-row">
+                    <td colspan="3">Loading users…</td>
+                  </tr>
+                  <tr *ngIf="!loading['users'] && users.length===0">
+                    <td colspan="3" style="text-align:center;padding:24px;color:#484f58">No users found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Active Sessions -->
+          <div class="section">
+            <div class="section-head">
+              <h3 class="section-title">Active Sessions</h3>
+              <button class="btn-refresh" (click)="loadSessions()">Refresh</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Session ID</th>
+                    <th>Project</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let s of sessions | slice:0:5">
+                    <td style="font-family:monospace;font-size:11px;color:#8b949e">
+                      {{ (s.sessionId || s.id || '—') | slice:0:12 }}…
+                    </td>
+                    <td>{{ s.projectId || s.project || '—' }}</td>
+                    <td>
+                      <button class="btn-action danger" (click)="confirmTerminateSession(s)">End</button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="loading['sessions']" class="loading-row">
+                    <td colspan="3">Loading sessions…</td>
+                  </tr>
+                  <tr *ngIf="!loading['sessions'] && sessions.length===0">
+                    <td colspan="3" style="text-align:center;padding:24px;color:#484f58">No active sessions</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ USERS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='users'">
+        <div class="page-header">
+          <h1 class="page-title">User Management</h1>
+          <p class="page-subtitle">View, suspend, or remove user accounts</p>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h3 class="section-title">All Users ({{ filteredUsers.length }})</h3>
+            <div class="search-box">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input class="search-input" type="text" placeholder="Search by username or email…"
+                [(ngModel)]="userSearch" (ngModelChange)="filterUsers()">
+            </div>
+            <button class="btn-refresh" (click)="loadUsers()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Provider</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="loading['users']" class="loading-row">
+                  <td colspan="6">Loading users…</td>
+                </tr>
+                <tr *ngFor="let u of filteredUsers">
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar">{{ (u.username || 'U')[0].toUpperCase() }}</div>
+                      <div>
+                        <div style="font-weight:600;color:#e6edf3">{{ u.username }}</div>
+                        <div style="font-size:11px;color:#484f58">{{ u.userId | slice:0:8 }}…</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="color:#8b949e">{{ u.email }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="u.role==='ADMIN' ? 'badge-admin' : 'badge-dev'">
+                      {{ u.role }}
+                    </span>
+                  </td>
+                  <td style="color:#8b949e;font-size:12px">{{ u.provider || 'LOCAL' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="isUserActive(u) ? 'badge-success' : 'badge-error'">
+                      {{ isUserActive(u) ? 'Active' : 'Suspended' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn-action warn" *ngIf="isUserActive(u) && u.role !== 'ADMIN'"
+                        (click)="confirmSuspendUser(u)">
+                        Suspend
+                      </button>
+                      <button class="btn-action danger" *ngIf="u.role !== 'ADMIN'" (click)="confirmDeleteUser(u)">
+                        Delete
+                      </button>
+                      <span *ngIf="u.role === 'ADMIN'" style="font-size:11px;color:#484f58">Protected</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!loading['users'] && filteredUsers.length===0">
+                  <td colspan="6">
+                    <div class="empty-state">
+                      <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                      <p class="empty-text">No users found</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ PROJECTS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='projects'">
+        <div class="page-header">
+          <h1 class="page-title">Projects Management</h1>
+          <p class="page-subtitle">View and manage all platform projects</p>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h3 class="section-title">All Projects ({{ filteredProjects.length }})</h3>
+            <div class="search-box">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input class="search-input" type="text" placeholder="Search by name or language…"
+                [(ngModel)]="projectSearch" (ngModelChange)="filterProjects()">
+            </div>
+            <button class="btn-refresh" (click)="loadProjects()">Refresh</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Language</th>
+                  <th>Visibility</th>
+                  <th>Stars</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="loading['projects']" class="loading-row">
+                  <td colspan="5">Loading projects…</td>
+                </tr>
+                <tr *ngFor="let p of filteredProjects">
+                  <td>
+                    <div style="font-weight:600;color:#e6edf3">{{ p.name }}</div>
+                    <div style="font-size:11px;color:#484f58">{{ (p.description || 'No description') | slice:0:60 }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge badge-info">{{ p.language || 'Unknown' }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="p.visibility==='PUBLIC' ? 'badge-success' : 'badge-muted'">
+                      {{ p.visibility || 'PRIVATE' }}
+                    </span>
+                  </td>
+                  <td style="color:#8b949e">{{ p.starCount || 0 }}</td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn-action danger" (click)="confirmDeleteProject(p)">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!loading['projects'] && filteredProjects.length===0">
+                  <td colspan="5">
+                    <div class="empty-state">
+                      <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                      </svg>
+                      <p class="empty-text">No projects found</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ SESSIONS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='sessions'">
+        <div class="page-header">
+          <h1 class="page-title">Collaboration Sessions</h1>
+          <p class="page-subtitle">Monitor and terminate live coding sessions</p>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h3 class="section-title">Active Sessions ({{ sessions.length }})</h3>
+            <button class="btn-refresh" (click)="loadSessions()">Refresh</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Session ID</th>
+                  <th>Project</th>
+                  <th>Owner</th>
+                  <th>Participants</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="loading['sessions']" class="loading-row">
+                  <td colspan="5">Loading sessions…</td>
+                </tr>
+                <tr *ngFor="let s of sessions">
+                  <td style="font-family:monospace;font-size:12px;color:#8b949e">
+                    {{ (s.sessionId || s.id || '—') | slice:0:16 }}…
+                  </td>
+                  <td style="color:#e6edf3">{{ s.projectId || s.project || '—' }}</td>
+                  <td style="color:#8b949e">{{ s.ownerId || s.owner || '—' }}</td>
+                  <td>
+                    <span class="badge badge-info">
+                      {{ s.participantCount || (s.participants?.length) || 0 }} members
+                    </span>
+                  </td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn-action danger" (click)="confirmTerminateSession(s)">Terminate</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!loading['sessions'] && sessions.length===0">
+                  <td colspan="5">
+                    <div class="empty-state">
+                      <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
+                      </svg>
+                      <p class="empty-text">No active sessions</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ EXECUTIONS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='executions'">
+        <div class="page-header">
+          <h1 class="page-title">Code Executions</h1>
+          <p class="page-subtitle">Monitor and cancel running code execution jobs</p>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h3 class="section-title">All Executions ({{ executions.length }})</h3>
+            <button class="btn-refresh" (click)="loadExecutions()">Refresh</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Job ID</th>
+                  <th>Language</th>
+                  <th>Status</th>
+                  <th>Output</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="loading['executions']" class="loading-row">
+                  <td colspan="5">Loading executions…</td>
+                </tr>
+                <tr *ngFor="let e of executions">
+                  <td style="font-family:monospace;font-size:12px;color:#8b949e">
+                    {{ (e.jobId || e.id || '—') | slice:0:14 }}…
+                  </td>
+                  <td>
+                    <span class="badge badge-info">{{ e.language || '—' }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(e.status)">{{ e.status || '—' }}</span>
+                  </td>
+                  <td
+                    style="font-size:12px;color:#8b949e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                    {{ e.output || e.stdout || '—' }}
+                  </td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn-action danger" *ngIf="e.status==='RUNNING' || e.status==='QUEUED'"
+                        (click)="confirmCancelExecution(e)">Cancel</button>
+                      <span *ngIf="e.status!=='RUNNING' && e.status!=='QUEUED'"
+                        style="font-size:11px;color:#484f58">—</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!loading['executions'] && executions.length===0">
+                  <td colspan="5">
+                    <div class="empty-state">
+                      <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                      </svg>
+                      <p class="empty-text">No executions found</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ NOTIFICATIONS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='notifications'">
+        <div class="page-header">
+          <h1 class="page-title">Notification Control</h1>
+          <p class="page-subtitle">Send system alerts and user-specific notifications</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start;">
+          <!-- Compose Form (Left) -->
+          <div class="section">
+            <div class="section-head">
+              <h3 class="section-title">Compose Notification</h3>
+            </div>
+            
+            <div class="form-body" style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+              <!-- Form fields same as before... -->
+              <!-- Mode Switch -->
+              <div class="form-group">
+                <label class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px; color: #8b949e;">Notification Scope</label>
+                <div style="display: flex; gap: 12px;">
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #e6edf3; font-size: 14px;">
+                    <input type="radio" [value]="false" [(ngModel)]="broadcastMode"> Direct Message
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #e6edf3; font-size: 14px;">
+                    <input type="radio" [value]="true" [(ngModel)]="broadcastMode"> Broadcast to All
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="!broadcastMode">
+                <label class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px; color: #8b949e;">Recipient</label>
+                <select [(ngModel)]="notificationForm.recipientId" 
+                  style="width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px; color: #e6edf3;">
+                  <option value="">Select a user...</option>
+                  <option *ngFor="let u of users" [value]="u.userId">{{ u.username }}</option>
+                </select>
+              </div>
+
+              <div class="form-group" *ngIf="!broadcastMode">
+                <label class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px; color: #8b949e;">Alert Level</label>
+                <div style="display: flex; gap: 10px;">
+                  <button class="badge" [class.badge-info]="notificationForm.type==='INFO'" (click)="notificationForm.type='INFO'">INFO</button>
+                  <button class="badge" [class.badge-success]="notificationForm.type==='SUCCESS'" (click)="notificationForm.type='SUCCESS'">SUCCESS</button>
+                  <button class="badge" [class.badge-warning]="notificationForm.type==='WARNING'" (click)="notificationForm.type='WARNING'">WARNING</button>
+                  <button class="badge" [class.badge-error]="notificationForm.type==='ERROR'" (click)="notificationForm.type='ERROR'">ERROR</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px; color: #8b949e;">Title</label>
+                <input type="text" [(ngModel)]="notificationForm.title" placeholder="e.g. System Maintenance"
+                  style="width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px; color: #e6edf3;">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px; color: #8b949e;">Message</label>
+                <textarea rows="4" [(ngModel)]="notificationForm.message" placeholder="Type your message here..."
+                  style="width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px; color: #e6edf3; resize: none;"></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end;">
+                <button class="btn-confirm-danger" (click)="sendNotification()" 
+                  style="background: #238636; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                  {{ broadcastMode ? 'Broadcast' : 'Send' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- History Sidebar (Right) -->
+          <div class="section" style="height: 600px; display: flex; flex-direction: column;">
+            <div class="section-head" style="flex-shrink: 0;">
+              <h3 class="section-title">Sent History</h3>
+            </div>
+            <div style="flex-grow: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+              <div *ngFor="let n of notificationsHistory" 
+                style="background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span class="badge" [ngClass]="'badge-' + n.type.toLowerCase()" style="font-size: 10px;">{{ n.type }}</span>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; color: #8b949e;">{{ n.createdAt | date:'short' }}</span>
+                    <button (click)="confirmDeleteNotification(n)" style="background: transparent; border: none; color: #f85149; cursor: pointer; padding: 2px;">
+                      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div style="font-weight: 600; color: #e6edf3; font-size: 14px; margin-bottom: 4px;">{{ n.title }}</div>
+                <div style="font-size: 13px; color: #8b949e; line-height: 1.4;">{{ n.message }}</div>
+                <div style="margin-top: 8px; font-size: 11px; color: #58a6ff;">To: {{ n.recipientId === 'ALL' ? 'Everyone' : n.recipientId }}</div>
+              </div>
+              <div *ngIf="notificationsHistory.length === 0" style="text-align: center; padding: 40px; color: #8b949e;">
+                No history available
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ═══════════════ PAYMENTS TAB ═══════════════ -->
+      <ng-container *ngIf="activeTab==='payments'">
+        <div class="page-header">
+          <h1 class="page-title">Revenue & Subscriptions</h1>
+          <p class="page-subtitle">Monitor premium user growth and transaction logs</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="section" style="margin-bottom: 24px; padding: 16px;">
+          <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+            <div class="search-box" style="max-width: 400px;">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input type="text" class="search-input" placeholder="Search by username or ID..." 
+                [(ngModel)]="paymentSearch" (ngModelChange)="filterPayments()">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; color: #8b949e;">Status:</span>
+              <select [(ngModel)]="paymentStatusFilter" (change)="filterPayments()"
+                style="background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 6px 12px; color: #e6edf3; font-size: 13px;">
+                <option value="ALL">All Status</option>
+                <option value="ACTIVE">Active</option>
+                <option value="EXPIRED">Expired</option>
+                <option value="CANCELLED">Cancelled</option>
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; color: #8b949e;">Date:</span>
+              <select [(ngModel)]="paymentDateFilter" (change)="filterPayments()"
+                style="background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 6px 12px; color: #e6edf3; font-size: 13px;">
+                <option value="ALL">All Time</option>
+                <option value="TODAY">Today</option>
+                <option value="WEEK">Last 7 Days</option>
+                <option value="MONTH">This Month</option>
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; color: #8b949e;">Cycle:</span>
+              <select [(ngModel)]="paymentBillingFilter" (change)="filterPayments()"
+                style="background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 6px 12px; color: #e6edf3; font-size: 13px;">
+                <option value="ALL">All Cycles</option>
+                <option value="MONTHLY">Monthly</option>
+                <option value="YEARLY">Yearly</option>
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; color: #8b949e;">Account:</span>
+              <select [(ngModel)]="paymentEntityFilter" (change)="filterPayments()"
+                style="background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 6px 12px; color: #e6edf3; font-size: 13px;">
+                <option value="ALL">All Types</option>
+                <option value="INDIVIDUAL">Individual</option>
+                <option value="TEAM">Team</option>
+              </select>
+            </div>
+
+            <button class="btn-refresh" (click)="loadPayments()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Subscriptions Table -->
+        <div class="section" style="margin-bottom: 32px;">
+          <div class="section-head">
+            <h3 class="section-title">Active Subscriptions</h3>
+            <span class="badge badge-info">{{ filteredSubscriptions.length }} Results</span>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Tier & Cycle</th>
+                  <th>Account Type</th>
+                  <th>Status</th>
+                  <th>Valid From</th>
+                  <th>Expiry Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of filteredSubscriptions">
+                  <td>
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-weight: 600; color: #e6edf3;">{{ getUserName(s.userId) }}</span>
+                      <span style="font-size: 10px; color: #8b949e; font-family: monospace;">{{ s.userId }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                      <span class="badge badge-success">{{ s.planType }}</span>
+                      <span style="font-size: 11px; color: #8b949e;">{{ s.billingCycle }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [class.badge-info]="s.entityType==='TEAM'" [class.badge-dev]="s.entityType==='INDIVIDUAL'">
+                      {{ s.entityType || 'INDIVIDUAL' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" 
+                      [class.badge-info]="s.status==='ACTIVE'"
+                      [class.badge-error]="s.status==='EXPIRED'"
+                      [class.badge-warning]="s.status==='CANCELLED'">{{ s.status }}</span>
+                  </td>
+                  <td>{{ s.startDate | date:'mediumDate' }}</td>
+                  <td [style.color]="s.status==='ACTIVE' ? '#3fb950' : '#f85149'">{{ s.expiryDate | date:'mediumDate' }}</td>
+                  <td>
+                    <button *ngIf="s.status==='ACTIVE'" class="btn-action danger" (click)="confirmTerminateSubscription(s)">Terminate</button>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredSubscriptions.length === 0">
+                  <td colspan="7" style="text-align: center; padding: 40px; color: #8b949e;">No subscriptions match your filters</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="section">
+          <div class="section-head">
+            <h3 class="section-title">Recent Transactions</h3>
+            <span class="badge badge-info">{{ filteredTransactions.length }} Results</span>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Order ID</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Payment ID</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of filteredTransactions">
+                  <td>
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-weight: 600; color: #e6edf3;">{{ getUserName(t.userId) }}</span>
+                      <span style="font-size: 10px; color: #8b949e; font-family: monospace;">{{ t.userId.substring(0,8) }}...</span>
+                    </div>
+                  </td>
+                  <td style="font-family: monospace; font-size: 12px;">{{ t.orderId }}</td>
+                  <td style="font-weight: 600;">{{ t.amount }} {{ t.currency }}</td>
+                  <td>
+                    <span class="badge" 
+                      [class.badge-success]="t.status==='SUCCESS'"
+                      [class.badge-error]="t.status==='FAILED'"
+                      [class.badge-warning]="t.status==='PENDING'">{{ t.status }}</span>
+                  </td>
+                  <td style="font-size: 12px; color: #8b949e;">{{ t.paymentId || '---' }}</td>
+                  <td>{{ t.createdAt | date:'medium' }}</td>
+                </tr>
+                <tr *ngIf="filteredTransactions.length === 0">
+                  <td colspan="6" style="text-align: center; padding: 40px; color: #8b949e;">No transactions found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════ CONFIRM DIALOG ══════════════ -->
+<div class="modal-overlay" *ngIf="confirmVisible" (click)="cancelConfirm()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <h2 class="modal-title">{{ confirmTitle }}</h2>
+    <p class="modal-msg">{{ confirmMessage }}</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cancelConfirm()">Cancel</button>
+      <button class="btn-confirm-danger" (click)="doConfirm()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast" [ngClass]="toastType" *ngIf="showToast">
+  <svg *ngIf="toastType==='success'" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+  </svg>
+  <svg *ngIf="toastType==='error'" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+  {{ toastMessage }}
+</div>

@@ -1,0 +1,13 @@
+<div *ngIf="isPremium; else prompt" class="contents">
+  <ng-content></ng-content>
+</div>
+<ng-template #prompt>
+  <div class="bg-gradient-to-br from-surface to-black border border-primary/30 p-6 rounded-xl text-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-primary/5 blur-[50px]"></div>
+    <h3 class="text-xl text-white font-bold mb-2 relative z-10">Unlock PRO Features</h3>
+    <p class="text-slate-400 text-sm mb-6 relative z-10">Upgrade to access higher execution limits, private repositories, and exclusive editor themes.</p>
+    <button routerLink="/pricing" class="bg-primary text-black px-6 py-2 rounded font-bold uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(0,240,255,0.3)] relative z-10 hover:bg-white transition-colors">
+      View Plans
+    </button>
+  </div>
+</ng-template>

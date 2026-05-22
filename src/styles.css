@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-background: #050505;
+  --bg-surface: #0a0a0a;
+  --bg-primary: #00f0ff;
+  --bg-primary-rgb: 0, 240, 255;
+  --bg-secondary: #d946ef;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-color: #1e293b;
+}
+
+body.light-theme {
+  --bg-background: #ffffff;
+  --bg-surface: #f8fafc;
+  --bg-primary: #0284c7;
+  --bg-primary-rgb: 2, 132, 199;
+  --bg-secondary: #d946ef;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-slate-200 font-sans antialiased;
+    color: var(--text-primary);
+  }
+}
+
+/* Scrollbar Support */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.2);
+}
+
+/* Light theme specific overrides for Slate classes */
+body.light-theme .text-slate-400 { color: #334155 !important; }
+body.light-theme .text-slate-500 { color: #1e293b !important; }
+body.light-theme .text-slate-600 { color: #0f172a !important; }
+body.light-theme .text-slate-700 { color: #0f172a !important; }
+body.light-theme .text-slate-300 { color: #0f172a !important; }
+body.light-theme .text-slate-200 { color: #000000 !important; }
+body.light-theme .text-white { color: #000000 !important; }
+
+body.light-theme .bg-background { background-color: #ffffff !important; }
+body.light-theme .bg-surface { background-color: #f8fafc !important; }
+body.light-theme .bg-slate-900 { background-color: #f1f5f9 !important; }
+body.light-theme .bg-slate-800 { background-color: #f1f5f9 !important; }
+body.light-theme .bg-slate-700 { background-color: #e2e8f0 !important; }
+body.light-theme .bg-slate-900\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+body.light-theme .bg-slate-800\/40 { background-color: rgba(0, 0, 0, 0.05) !important; }
+body.light-theme .bg-slate-800\/30 { background-color: rgba(0, 0, 0, 0.03) !important; }
+body.light-theme .bg-slate-800\/20 { background-color: rgba(0, 0, 0, 0.02) !important; }
+body.light-theme .bg-emerald-500\/10 { background-color: #dcfce7 !important; color: #166534 !important; }
+body.light-theme .bg-primary\/10 { background-color: #e0f2fe !important; }
+body.light-theme .bg-black\/20 { background-color: rgba(0,0,0,0.03) !important; }
+
+body.light-theme .border-slate-800 { border-color: #e2e8f0 !important; }
+body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
+body.light-theme .border-slate-600 { border-color: #94a3b8 !important; }
+body.light-theme .border-white\/5 { border-color: rgba(0,0,0,0.1) !important; }
+body.light-theme .border-emerald-500\/30 { border-color: #86efac !important; }
+body.light-theme .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important; }
+body.light-theme .backdrop-blur-lg { backdrop-blur: none !important; }
+
+/* Navbar Active State */
+.active-nav-item {
+  background-color: rgba(0, 240, 255, 0.1) !important;
+  color: #00f0ff !important;
+  border-color: rgba(0, 240, 255, 0.3) !important;
+}
+
+body.light-theme .active-nav-item {
+  background-color: #e0f2fe !important;
+  color: #0284c7 !important;
+  border-color: #bae6fd !important;
+}
+
+/* Ensure icons and hover states work in light mode */
+body.light-theme .hover\:text-white:hover { color: #000000 !important; }
+body.light-theme .hover\:bg-slate-800:hover { background-color: #e2e8f0 !important; }
+
+/* Button Text Contrast Fixes */
+body.light-theme .bg-primary.text-black { color: #ffffff !important; }
+body.light-theme .bg-primary .text-black { color: #ffffff !important; }
+
+/* Disabled states in light theme */
+body.light-theme .disabled\:bg-slate-800:disabled { background-color: #f1f5f9 !important; opacity: 0.5; }
+body.light-theme .disabled\:text-slate-500:disabled { color: #94a3b8 !important; }
+
+/* Yellow/Amber fixes for light theme */
+body.light-theme .text-yellow-500 { color: #854d0e !important; }
+body.light-theme .border-yellow-500\/20 { border-color: rgba(133, 77, 14, 0.2) !important; }
+body.light-theme .bg-yellow-500\/10 { background-color: rgba(133, 77, 14, 0.05) !important; }
