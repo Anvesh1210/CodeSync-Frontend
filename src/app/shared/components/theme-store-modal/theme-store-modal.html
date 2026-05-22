@@ -1,0 +1,123 @@
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="fixed inset-0 bg-background/90 backdrop-blur-sm transition-opacity" (click)="closeModal()"></div>
+
+  <!-- Modal Panel -->
+  <div class="relative bg-surface border border-slate-800 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
+    
+    <!-- Header -->
+    <div class="flex items-start justify-between px-8 py-6 border-b border-slate-800 shrink-0">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded bg-rose-500/10 flex items-center justify-center text-rose-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-white">Theme Store</h3>
+          <p class="text-xs font-mono text-slate-500 tracking-widest">// curated editor themes</p>
+        </div>
+      </div>
+      <button (click)="closeModal()" class="text-slate-500 hover:text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <div class="flex-1 flex min-h-0">
+      
+      <!-- List -->
+      <div class="w-1/2 border-r border-slate-800 overflow-y-auto p-6 space-y-4">
+        
+        <div *ngFor="let theme of themes" 
+             (click)="selectForPreview(theme.id)"
+             class="border rounded-xl p-4 cursor-pointer flex flex-col relative transition-all"
+             [ngClass]="{
+               'border-primary bg-primary/5': previewThemeId === theme.id,
+               'border-slate-800 bg-background hover:border-slate-700': previewThemeId !== theme.id,
+               'opacity-60': theme.isPro && !isPremium && previewThemeId !== theme.id
+             }">
+          
+          <!-- Lock Icon for Pro themes if not premium -->
+          <svg *ngIf="theme.isPro && !isPremium" class="w-4 h-4 absolute top-4 right-4 text-slate-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+          </svg>
+
+          <!-- Check Icon for active theme -->
+          <svg *ngIf="selectedThemeId === theme.id" class="w-4 h-4 absolute top-4 right-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-bold flex items-center" [ngClass]="previewThemeId === theme.id ? 'text-white' : 'text-slate-300'">
+              {{theme.name}}
+              <span *ngIf="theme.isPro" class="bg-yellow-500/20 text-yellow-500 text-[8px] px-1.5 py-0.5 rounded ml-2 uppercase font-bold tracking-wider">PRO</span>
+            </h4>
+          </div>
+          <div class="text-[10px] font-mono text-slate-500 mb-4">by {{theme.author}}</div>
+          
+          <!-- Color Palette -->
+          <div class="flex h-3 rounded overflow-hidden w-48 border border-slate-800">
+            <div *ngFor="let color of theme.colors" 
+                 [style.background-color]="color"
+                 class="flex-1"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Preview -->
+      <div class="w-1/2 p-8 flex flex-col bg-background relative">
+        <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-4">PREVIEW: {{activePreviewTheme.name}}</div>
+        
+        <div class="flex-1 rounded-xl border border-slate-800 p-6 font-mono text-sm shadow-inner overflow-hidden mb-6 transition-colors"
+             [style.background-color]="activePreviewTheme.background">
+          <div [style.color]="activePreviewTheme.colors[2]" class="opacity-50 mb-4">{{activePreviewTheme.previewCode.comment}}</div>
+          
+          <div class="text-white">
+            <span [style.color]="activePreviewTheme.colors[3]">{{activePreviewTheme.previewCode.keyword}}</span> 
+            <span [style.color]="activePreviewTheme.colors[1]"> {{activePreviewTheme.previewCode.variable}}</span> 
+            <span [style.color]="activePreviewTheme.colors[2]"> {{activePreviewTheme.previewCode.operator}}</span> 
+            <span [style.color]="activePreviewTheme.colors[3]"> await</span>
+            <span [style.color]="activePreviewTheme.colors[2]"> {{activePreviewTheme.previewCode.func}}</span>
+            <span [style.color]="activePreviewTheme.colors[4]">(</span>
+            <span [style.color]="activePreviewTheme.colors[1]">nodes</span>
+            <span [style.color]="activePreviewTheme.colors[4]">)</span>
+            <span [style.color]="activePreviewTheme.colors[4]">;</span>
+          </div>
+          <br>
+          <div>
+            <span [style.color]="activePreviewTheme.colors[3]">function</span> 
+            <span [style.color]="activePreviewTheme.colors[2]"> broadcast</span>
+            <span [style.color]="activePreviewTheme.colors[4]">(</span>
+            <span [style.color]="activePreviewTheme.colors[5]">state</span>
+            <span [style.color]="activePreviewTheme.colors[4]">)</span> 
+            <span [style.color]="activePreviewTheme.colors[4]"> &#123;</span>
+          </div>
+          <div class="pl-4">
+            <span [style.color]="activePreviewTheme.colors[3]">return</span> 
+            <span [style.color]="activePreviewTheme.colors[5]"> "synced"</span>
+            <span [style.color]="activePreviewTheme.colors[4]">;</span>
+          </div>
+          <div [style.color]="activePreviewTheme.colors[4]">&#125;</div>
+          <br>
+          <div [style.color]="activePreviewTheme.colors[5]">{{activePreviewTheme.previewCode.string}}</div>
+        </div>
+
+        <!-- Action Button -->
+        <button *ngIf="!activePreviewTheme.isPro || isPremium; else unlockBtn"
+                (click)="applyTheme()"
+                [disabled]="selectedThemeId === activePreviewTheme.id"
+                class="w-full bg-primary hover:bg-primary-hover text-white font-bold text-sm tracking-widest uppercase py-4 rounded flex items-center justify-center transition-colors mt-auto disabled:opacity-50 disabled:cursor-not-allowed">
+          <svg *ngIf="selectedThemeId === activePreviewTheme.id" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          {{ selectedThemeId === activePreviewTheme.id ? 'Active' : 'Apply Theme' }}
+        </button>
+
+        <ng-template #unlockBtn>
+          <button (click)="goToPricing()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-sm tracking-widest uppercase py-4 rounded flex items-center justify-center transition-colors mt-auto">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+            Unlock with Pro
+          </button>
+        </ng-template>
+      </div>
+
+    </div>
+  </div>
+</div>

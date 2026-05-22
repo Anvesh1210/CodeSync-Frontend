@@ -1,0 +1,41 @@
+<div class="min-h-full flex items-center justify-center p-8 bg-background relative overflow-hidden text-slate-300">
+  <div class="w-full max-w-md z-10">
+    <div class="bg-surface border border-slate-800 rounded-2xl p-8 shadow-2xl relative text-center">
+      
+      <div class="mb-8">
+        <div class="w-16 h-16 mx-auto mb-4 border border-primary/30 rounded-xl bg-primary/10 flex items-center justify-center">
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-2">Verify your email</h2>
+        <p class="text-slate-400 text-sm">We've sent a 6-digit verification code to <br><span class="text-primary font-mono mt-1 inline-block">{{email || 'your email'}}</span></p>
+      </div>
+
+      <div *ngIf="errorMessage" class="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded text-red-500 text-sm font-mono text-center">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/50 rounded text-emerald-500 text-sm font-mono text-center">
+        {{ successMessage }}
+      </div>
+
+      <form (ngSubmit)="verifyOtp()" class="space-y-6">
+        <div>
+          <label class="block text-[10px] font-mono tracking-widest text-slate-400 mb-2 uppercase text-left">Verification Code</label>
+          <input type="text" name="otpCode" [(ngModel)]="otpCode" required maxlength="6"
+            class="block w-full px-4 py-3 bg-background border border-slate-800 rounded text-slate-200 focus:outline-none focus:border-primary transition-colors font-mono text-xl tracking-[0.5em] text-center"
+            placeholder="000000">
+        </div>
+
+        <button type="submit" 
+          class="w-full py-3 px-4 rounded text-sm font-bold text-black bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface focus:ring-primary transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+          Verify Email
+        </button>
+      </form>
+      
+      <div class="mt-8 text-xs text-slate-400 font-mono flex flex-col space-y-2">
+        <p>Didn't receive the code?</p>
+        <a href="javascript:void(0)" (click)="resendOtp()" class="font-bold text-primary hover:text-white transition-colors uppercase tracking-widest">Resend Code</a>
+      </div>
+    </div>
+  </div>
+</div>

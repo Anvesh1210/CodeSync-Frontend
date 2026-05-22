@@ -1,0 +1,163 @@
+<div class="min-h-full bg-background flex flex-col font-sans">
+
+  <!-- Dashboard Nav Tabs -->
+  <div class="border-b border-slate-800 px-8 pt-4">
+    <div class="flex space-x-8 text-xs font-mono font-bold tracking-widest uppercase">
+      <a routerLink="/dashboard" class="text-primary border-b-2 border-primary pb-4">Overview</a>
+      <a routerLink="/profile" class="text-slate-500 hover:text-slate-300 pb-4 transition-colors">Profile</a>
+    </div>
+  </div>
+
+  <div class="p-8 max-w-[1600px] mx-auto w-full">
+
+    <!-- Header -->
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <div class="text-primary text-[10px] font-mono tracking-widest uppercase mb-3">
+          // node {{ currentUser?.username || '...' }}
+        </div>
+        <h1 class="text-4xl font-bold text-white tracking-tight mb-2">
+          Welcome back, {{ currentUser?.fullName || currentUser?.username || 'developer' }}.
+        </h1>
+        <p class="text-slate-400 font-mono text-sm">Your active workspaces and recent activity.</p>
+      </div>
+      <button
+        (click)="openNewProjectModal()"
+        class="bg-primary hover:bg-primary/90 text-black px-5 py-2.5 rounded font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        New Project
+      </button>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-white mb-1">{{ myProjects.length }}</div>
+        <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">My Projects</div>
+      </div>
+
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 rounded bg-secondary/10 text-secondary flex items-center justify-center mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-white mb-1">{{ totalStars }}</div>
+        <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">Total Stars</div>
+      </div>
+
+      <div class="bg-surface border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+        <div class="w-8 h-8 rounded bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-white mb-1">{{ totalForks }}</div>
+        <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">Total Forks</div>
+      </div>
+
+      <div
+        (click)="router.navigate(['/pricing'])"
+        class="bg-surface border rounded-xl p-6 hover:border-slate-700 transition-colors cursor-pointer"
+        [class.border-yellow-500]="currentUser?.premium"
+        [class.border-slate-800]="!currentUser?.premium">
+        <div class="w-8 h-8 rounded bg-amber-500/10 text-amber-500 flex items-center justify-center mb-4">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-white mb-1">{{ currentUser?.premium ? 'PRO' : 'FREE' }}</div>
+        <div class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
+          Plan Status <span *ngIf="currentUser?.premium" class="text-yellow-500 ml-1">★</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Projects Section -->
+    <section>
+      <div class="flex justify-between items-end mb-4 border-b border-slate-800 pb-2">
+        <h2 class="text-lg font-bold text-white">My Projects</h2>
+        <a routerLink="/dashboard/my-projects" class="text-[10px] font-mono text-slate-500 hover:text-white transition-colors">
+          view all →
+        </a>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="flex items-center space-x-3 py-10 text-slate-500 font-mono text-sm">
+        <svg class="animate-spin w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span>Loading projects...</span>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="errorMessage && !isLoading" class="border border-red-500/30 bg-red-500/10 rounded-xl px-5 py-3 text-red-400 font-mono text-sm">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Projects Grid -->
+      <div *ngIf="!isLoading && !errorMessage && myProjects.length > 0"
+           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          *ngFor="let p of myProjects"
+          (click)="openProject(p.projectId)"
+          class="bg-surface border border-slate-800 rounded-xl p-5 hover:border-slate-600 transition-colors cursor-pointer group">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="text-white font-bold group-hover:text-primary transition-colors truncate">{{ p.name }}</h3>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 ml-2 flex-shrink-0">
+              {{ p.language }}
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 font-mono leading-relaxed mb-5 h-10 overflow-hidden">
+            {{ p.description || 'No description provided.' }}
+          </p>
+          <div class="flex justify-between items-center text-[10px] font-mono text-slate-500">
+            <span class="flex items-center">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              </svg>
+              {{ p.starCount || 0 }}
+            </span>
+            <span [class]="p.visibility === 'PUBLIC' ? 'text-emerald-500' : 'text-slate-500'">
+              {{ p.visibility === 'PUBLIC' ? 'public' : 'private' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && !errorMessage && myProjects.length === 0"
+           class="flex flex-col items-center justify-center py-16 border border-dashed border-slate-800 rounded-xl">
+        <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+          <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-white font-semibold mb-1">No projects yet</h3>
+        <p class="text-slate-500 font-mono text-xs mb-5">Create your first project to get started.</p>
+        <button
+          (click)="openNewProjectModal()"
+          class="bg-primary hover:bg-primary/90 text-black px-5 py-2 rounded font-mono text-xs font-bold tracking-widest uppercase transition-all">
+          Create Project
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- New Project Modal -->
+  <app-new-project-modal
+    *ngIf="isModalOpen"
+    (close)="closeNewProjectModal()"
+    (projectCreated)="onProjectCreated()">
+  </app-new-project-modal>
+
+</div>
