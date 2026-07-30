@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit {
   imageError = false;
   isPremium = false;
   isVisible = true;
+  isMobileMenuOpen = false;
 
   ngOnInit() {
     this.checkAuth();
@@ -39,8 +40,13 @@ export class NavbarComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.checkAuth();
         this.updateVisibility();
+        this.isMobileMenuOpen = false;
       }
     });
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   private updateVisibility() {

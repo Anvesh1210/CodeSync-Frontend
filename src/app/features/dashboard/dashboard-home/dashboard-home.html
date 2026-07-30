@@ -8,22 +8,22 @@
     </div>
   </div>
 
-  <div class="p-8 max-w-[1600px] mx-auto w-full">
+  <div class="p-4 sm:p-8 max-w-[1600px] mx-auto w-full">
 
     <!-- Header -->
-    <div class="flex justify-between items-end mb-10">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-10">
       <div>
         <div class="text-primary text-[10px] font-mono tracking-widest uppercase mb-3">
           // node {{ currentUser?.username || '...' }}
         </div>
-        <h1 class="text-4xl font-bold text-white tracking-tight mb-2">
+        <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">
           Welcome back, {{ currentUser?.fullName || currentUser?.username || 'developer' }}.
         </h1>
         <p class="text-slate-400 font-mono text-sm">Your active workspaces and recent activity.</p>
       </div>
       <button
         (click)="openNewProjectModal()"
-        class="bg-primary hover:bg-primary/90 text-black px-5 py-2.5 rounded font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center">
+        class="bg-primary hover:bg-primary/90 text-black px-5 py-2.5 rounded font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center self-start sm:self-auto">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
         </svg>
