@@ -135,6 +135,10 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      this.isLeftSidebarVisible = false;
+      this.isRightSidebarVisible = false;
+    }
     this.projectId = this.route.snapshot.paramMap.get('projectId') || '';
     if (this.projectId) {
       this.loadProjectData();
